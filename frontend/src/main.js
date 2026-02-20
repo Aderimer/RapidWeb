@@ -26,7 +26,8 @@ const app = createApp()
 app.use(PrimeVue, {
     theme: {
         preset: Aura
-    }
+    },
+    ripple: true,
 });
 
 

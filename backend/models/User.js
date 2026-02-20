@@ -10,12 +10,16 @@ module.exports = (sequelize, Sequelize) => {
     },
     encryptedPassword: {
       type: Sequelize.DataTypes.BLOB,
-      allowNull: true,
+      allowNull: false,
     },
     salt: {
       type: Sequelize.DataTypes.BLOB,
-      allowNull: true,
+      allowNull: false,
     },
+    role: {
+      type: Sequelize.DataTypes.STRING,
+      defaultValue: "Rookie",
+    }
   });
   return User;
 };

@@ -5,6 +5,7 @@ var jsend = require("jsend");
 var jwt = require("jsonwebtoken");
 var LocalStrategy = require("passport-local");
 var crypto = require("crypto");
+var { isUser } = require('../middleware/authMiddleware')
 var db = require("../models");
 var UserService = require("../services/UserService");
 var userService = new UserService(db);
@@ -52,13 +53,14 @@ passport.deserializeUser(function (user, cb) {
 var router = express.Router();
 router.use(jsend.middleware);
 
-router.post("/logout", function (req, res, next) {
-  req.logout(function (err) {
-    if (err) {
-      return next(err);
-    }
-    res.redirect("/");
-  });
+router.post("/logout", isUser, function (req, res, next) {
+  res.clearCookie('jwt', {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'strict',
+    path: '/'
+  })
+  res.jsend.success('Logout successful')
 });
 
 router.post("/signup", async function (req, res, next) {
@@ -135,7 +137,18 @@ router.post("/login", async (req, res, next) => {
             { id: data.id, email: data.email },
             process.env.TOKEN_SECRET,
             { expiresIn: "1h" },
+
+            
           );
+
+          // Cookie
+            res.cookie('jwt', token, {
+              httpOnly: true,
+              secure: process.env.NODE_ENV === 'production', // Force https in production
+              sameSite: 'strict',
+              maxAge: 3600000, // 1 hour
+              path: '/'
+            })
         } catch (err) {
           res.jsend.fail("Something went wrong with creating JWT token.");
         }

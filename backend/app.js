@@ -1,10 +1,13 @@
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
+const jwt = require('jsonwebtoken')
 var cookieParser = require('cookie-parser');
+const cors = require('cors');
 var logger = require('morgan');
 const db = require('./models')
 const sqlite3 = require('sqlite3')
+const bcrypt = require('bcryptjs')
 
 // Routes
 var indexRouter = require('./routes/index');
@@ -23,6 +26,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Cors
+app.use(cors({
+  origin: 'http://localhost:3000', //Replace with front-end url later
+  credentials: true
+}))
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
