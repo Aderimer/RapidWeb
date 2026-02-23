@@ -64,17 +64,18 @@ router.post("/logout", isUser, function (req, res, next) {
 });
 
 router.post("/signup", async function (req, res, next) {
+  const { email, password, username } = req.body;
   if (
-    !req.body.email ||
-    !req.body.password ||
-    !req.body.username
+    !email ||
+    !password ||
+    !username
   ) {
     return res.jsend.fail({
       statusCode: 400,
       message: "All fields are required.",
     });
   }
-  const existingUser = await userService.getUserByEmail(req.body.email);
+  const existingUser = await userService.getUserByEmail(email);
   if (existingUser) {
     return res.jsend.fail({
       statusCode: 400,
