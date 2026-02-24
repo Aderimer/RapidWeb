@@ -1,6 +1,6 @@
 require('dotenv').config();
 const jsend = require('jsend');
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
 
 
 // Cookie verification
@@ -23,12 +23,7 @@ async function isUser(req, res, next) {
 
 async function authMiddleware(req, res, next) {
     try {
-        const authHeader = req.headers['authorization'];
-        const adminInfo = await adminService.getUser();
-
-        if (adminInfo) {
-            
-        }
+        // TODO: Use getRole User service to check for Admin role
     } catch (error) {
         return res.jsend.fail({ statusCode: 500, message: 'No admin user found, please contact support.'})
     }

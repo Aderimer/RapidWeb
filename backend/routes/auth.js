@@ -157,6 +157,8 @@ router.post("/login", async (req, res, next) => {
           statusCode: 200,
           result: "You are now logged in.",
           id: data.id,
+          username: data.username,
+          role: data.role,
           email: data.email,
           token: token,
         });

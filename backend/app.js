@@ -6,8 +6,7 @@ var cookieParser = require('cookie-parser');
 const cors = require('cors');
 var logger = require('morgan');
 const db = require('./models')
-const sqlite3 = require('sqlite3')
-const bcrypt = require('bcryptjs')
+
 
 // Routes
 var indexRouter = require('./routes/index');
@@ -17,7 +16,8 @@ var eventsRouter = require('./routes/events');
 
 var app = express();
 
-db.sequelize.sync({ force: true });
+db.sequelize.sync({ force: false })
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

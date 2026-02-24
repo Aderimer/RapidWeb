@@ -3,25 +3,18 @@ const Sequelize = require("sequelize");
 const fs = require("fs");
 const path = require("path");
 const basename = path.basename(__filename);
-if (process.env.NODE_ENV === "development") {
-  const devConnection = {
-    dialect: process.env.DIALECT,
-    dialectmodel: process.env.DIALECTMODEL,
-    storage: process.env.DB_STORAGE,
-  };
-  var sequelize = new Sequelize(devConnection);
-} else {
-  const connection = {
-    database: process.env.DATABASE_NAME,
-    username: process.env.ADMIN_USERNAME,
-    password: process.env.ADMIN_PASSWORD,
-    host: process.env.HOST,
-    port: process.env.DB_PORT,
-    dialect: process.env.DIALECT,
-    dialectmodel: process.env.DIALECTMODEL,
-  };
-  var sequelize = new Sequelize(connection);
-}
+
+const connection = {
+  database: process.env.DATABASE_NAME,
+  username: process.env.ADMIN_USERNAME,
+  password: process.env.ADMIN_PASSWORD,
+  host: process.env.HOST,
+  port: process.env.DB_PORT,
+  dialect: process.env.DIALECT,
+  dialectmodel: process.env.DIALECTMODEL,
+};
+var sequelize = new Sequelize(connection);
+
 
 const db = {};
 
