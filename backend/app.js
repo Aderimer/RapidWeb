@@ -31,7 +31,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Cors
 app.use(cors({
-  origin: 'http://localhost:3000', //Replace with front-end url later
+  origin: 'http://localhost:5173', //Replace with front-end url later
   credentials: true
 }))
 

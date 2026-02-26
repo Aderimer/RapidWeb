@@ -1,7 +1,20 @@
 <script setup>
     import Button from 'primevue/button'
     import { router } from '../main.js'
+    import { useAuthStore } from '../stores/auth.js'
+import Cookies from 'universal-cookie';
 
+    const authStore = useAuthStore();
+    const isUser = localStorage.getItem('token') !== null;
+    const role = localStorage.getItem('role');
+    const isAdmin = role === 'Admin';
+    const username = localStorage.getItem('username');
+    
+    const logout = () => {
+        authStore.logout();
+        router.push('/login');
+        Cookies.remove('jwt');
+    }
 
     const backButton = () => {
         router.go(-1)
@@ -18,7 +31,11 @@
         </section>
 
         <section class="nav-right">
-            <RouterLink to="/login">Logg inn</RouterLink>
+            <RouterLink v-if="isAdmin" to="/admin">Admin</RouterLink>
+            <RouterLink v-if="!isUser" to="/login">Logg inn</RouterLink>
+            <RouterLink v-if="!isUser" to="/signup">Registrer</RouterLink>
+            <Button v-if="isUser" v-on:click="logout()">Logg ut</Button>
+            <span v-if="isUser">{{ username }}</span>
         </section>
     </nav>
             <h1>Current path:  {{ $route.fullPath }}</h1>

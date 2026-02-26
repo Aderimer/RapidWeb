@@ -1,23 +1,42 @@
 <script setup>
     import NavBar from './components/NavBar.vue';
+    import { useAuthStore } from './stores/auth.js';
     import { router } from './main.js'
     import {Button} from 'primevue'
+    import { ref } from 'vue';
+
+    const authStore = useAuthStore();
+    const email = ref('');
+    const password = ref('');
     
+    const handleSubmit = async () => {
+        try {
+            await authStore.login({
+                email: email.value,
+                password: password.value
+            });
+            router.push('/');
+        } catch (error) {
+            console.error('Login failed:', error);
+        }
+    }
 </script>
 
 <template>
     <NavBar />
-    <form action="loginPost()" method="post">
+    <form @submit.prevent="handleSubmit()">
         <label for="email">Email</label>
-        <input type="text" name="email" placeholder="Email">
+        <input v-model="email" type="text" name="email" placeholder="Email">
 
         <label for="password">Password</label>
-        <input type="password" name="password" placeholder="********">
+        <input v-model="password" type="password" name="password" placeholder="********">
 
         <Button id="btn-signup" label="login" type="submit">Log in</Button>
         <Button label="Sign up"><RouterLink to="/signup">Sign up</RouterLink></Button>
     </form>
+
 </template>
+
 
 <style scoped>
     form {

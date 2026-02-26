@@ -53,6 +53,17 @@ class UserService {
     }
   }
 
+  async getRole(id) {
+    try {
+      const user = await this.User.findOne({
+        where: { id: id }
+      })
+      return user.role;
+    } catch (error) {
+      throw error
+    }
+  }
+
   async updateUserRole(id, newRole) {
     try {
     const user = await this.User.update({

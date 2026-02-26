@@ -5,7 +5,7 @@ var jsend = require("jsend");
 var jwt = require("jsonwebtoken");
 var LocalStrategy = require("passport-local");
 var crypto = require("crypto");
-var { isUser } = require('../middleware/authMiddleware')
+var { isUser, isAdmin } = require('../middleware/authMiddleware')
 var db = require("../models");
 var UserService = require("../services/UserService");
 var userService = new UserService(db);
@@ -135,7 +135,7 @@ router.post("/login", async (req, res, next) => {
         let token;
         try {
           token = jwt.sign(
-            { id: data.id, email: data.email },
+            { id: data.id, email: data.email, username: data.username, role: data.role },
             process.env.TOKEN_SECRET,
             { expiresIn: "1h" },
 
@@ -167,13 +167,13 @@ router.post("/login", async (req, res, next) => {
   });
 });
 
-router.get('/all', async (req, res) => {
+router.get('/all', isAdmin, async (req, res) => {
   const users = await userService.getAllUsers();
 
   res.json({"users": users})
 })
 
-router.get("/:id", async (req, res) => {
+router.get("/profile/:id", async (req, res) => {
   const userId = req.params.id;
   try {
     if (!isNaN(userId)) {
