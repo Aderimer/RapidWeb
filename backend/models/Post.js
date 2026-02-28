@@ -12,9 +12,17 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.DataTypes.BLOB,
             allowNull: true
         },
-        eventDate: {
+        date: {
             type: Sequelize.DataTypes.STRING,
             defaultValue: "Dato kommer"
+        },
+        time: {
+            type: Sequelize.DataTypes.STRING,
+            defaultValue: "Tid kommer på snap"
+        },
+        lokasjon: {
+            type: Sequelize.DataTypes.STRING,
+            defaultValue: "Lokasjon kommer på snap"
         }
     });
     return Post

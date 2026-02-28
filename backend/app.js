@@ -35,10 +35,10 @@ app.use(cors({
   credentials: true
 }))
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
-app.use('/events', eventsRouter);
-app.use('/admin', adminRouter);
+app.use('/api', indexRouter);
+app.use('/api/users', usersRouter);
+app.use('/api/events', eventsRouter);
+app.use('/apiadmin', adminRouter);
 
 
 // catch 404 and forward to error handler

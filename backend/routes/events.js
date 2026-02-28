@@ -27,4 +27,9 @@ router.put('/:id', async (req, res) => {
     res.redirect(`/events/${id}`)
 })
 
+router.get('/getEvents', async (req, res) => {
+    const posts = await postService.getAllPosts();
+    res.jsend.success({status: "success", data: posts})
+})
+
 module.exports = router;
