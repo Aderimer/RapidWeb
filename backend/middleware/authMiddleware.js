@@ -7,6 +7,21 @@ const UserService = require('../services/UserService');
 const userService = new UserService(db);
 
 
+
+async function getUserData(req, res, next) {
+    try {
+        if (!req.cookies.jwt) {
+            req.userData = null;
+            return next();
+        }
+        const decoded = jwt.verify(req.cookies.jwt, process.env.TOKEN_SECRET);
+        const userData = await userService.getUserById(decoded.id);
+        req.userData = userData ? { id: userData.id, email: userData.email, role: userData.role } : null;
+        next();
+    } catch (error) {
+        return res.jsend.error('Failed to retrieve user data, please try again later.')
+    }
+}
 // Cookie verification
 async function isUser(req, res, next) {
     const token = req.cookies.jwt;
@@ -46,4 +61,4 @@ async function isAdmin(req, res, next) {
     }
 }
 
-module.exports =  {isUser, isAdmin}
+module.exports =  {isUser, isAdmin, getUserData}

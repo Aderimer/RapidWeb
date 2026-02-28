@@ -104,6 +104,13 @@ router.post("/signup", async function (req, res, next) {
   );
 });
 
+router.get('/login', async (req, res) => {
+  var locals = {
+    title: 'Logg inn'
+  }
+  res.render('login', { title: locals.title });
+})
+
 router.post("/login", async (req, res, next) => {
   const { email, password } = req.body;
   if (email == null) {

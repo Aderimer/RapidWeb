@@ -1,0 +1,21 @@
+<nav class="navbar-container">
+            <a class="logo" href="/"><img id="logo-svg" height="40" width="120" src="/svg/logo.svg" alt=""></a>
+    <section class="navbar-left">
+        <a href="/merch">Merch</a>
+        <a href="/about">Om Oss</a>
+    </section>
+
+    <section class="navbar-right">
+        <% if (!userData) { %>
+         <a href="/users/login">Logg Inn</a>
+        <% } else { %>
+            <a href="/api/user/<%= userData.id %>">Min Profil</a>
+            <a href="/users/logout">Logg Ut</a>
+        <% } %>
+        <% if (userData && userData.role === "Admin") { %>
+         <a href="/admin/dashboard">Dashboard</a>
+        <% } %>
+    </section>
+    
+
+</nav>

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= locals.title %></title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Mingzat&family=Secular+One&display=swap');
+    </style>
+    <link rel="stylesheet" href="/stylesheets/style.css">
+</head>
+<body>
+    <div class="container">
+        <%- include('./components/navbar', { user: null}) %>
+        <main class="main">
+            <%- body %>
+        </main>
+        <!-- Footer later-->
+    </div>
+</body>
+</html>

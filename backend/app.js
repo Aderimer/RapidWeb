@@ -7,6 +7,9 @@ const cors = require('cors');
 var logger = require('morgan');
 const db = require('./models')
 
+// Temporary front-end
+var expressLayouts = require('express-ejs-layouts');
+
 
 // Routes
 var indexRouter = require('./routes/index');
@@ -22,6 +25,8 @@ db.sequelize.sync({ force: false })
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+// Temporary front-end vvv
+app.use(expressLayouts);
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -35,10 +40,10 @@ app.use(cors({
   credentials: true
 }))
 
-app.use('/api', indexRouter);
-app.use('/api/users', usersRouter);
-app.use('/api/events', eventsRouter);
-app.use('/apiadmin', adminRouter);
+app.use('/', indexRouter);
+app.use('/users', usersRouter);
+app.use('/events', eventsRouter);
+app.use('/admin', adminRouter);
 
 
 // catch 404 and forward to error handler
