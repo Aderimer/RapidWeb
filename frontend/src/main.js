@@ -13,6 +13,29 @@ import LoginView from './LoginView.vue';
 import AdminView from './AdminView.vue';
 import SignupView from './SignupView.vue';
 
+
+// PrimeVue preset
+const RapidPreset = {
+    semantic: {
+        colorScheme: {
+            light: {
+                0: 'cyan-900',
+                100: 'cyan-800',
+                200: 'cyan-700',
+                300: 'slate-950',
+                400: 'stone-50',
+            },
+            dark: {
+                0: 'cyan-900',
+                100: 'cyan-800',
+                200: 'cyan-700',
+                300: 'gray-50',
+                400: 'neutral-700',
+            }
+        }
+    }
+}
+
 const routes = [
     { path: '/', component: HomeView },
     { path: '/about', component: AboutView },
@@ -48,11 +71,15 @@ router.beforeEach((to, from, next) => {
 
 const app = createApp(App)
 app.use(createPinia())
-app.use(PrimeVue, {
-    theme: {
-        preset: Aura
-    },
-    ripple: true,
-});
+app.use(PrimeVue, { theme: {
+    preset: RapidPreset,
+    options: {
+        prefix: 'pv',
+        darkModeSelector: '.dark-mode',
+        cssLayer: false,
+    }
+}
+ 
+ });
 app.use(router);
 app.mount('#app')

@@ -2,7 +2,7 @@
     import Button from 'primevue/button'
     import { router } from '../main.js'
     import { useAuthStore } from '../stores/auth.js'
-import Cookies from 'universal-cookie';
+    import Cookies from 'universal-cookie';
 
     const authStore = useAuthStore();
     const isUser = localStorage.getItem('token') !== null;
@@ -19,6 +19,10 @@ import Cookies from 'universal-cookie';
     const backButton = () => {
         router.go(-1)
     }
+
+    function toggleDarkMode() {
+        document.documentElement.classList.toggle('rapid-darkMode');
+    }
 </script>
 
 <template>
@@ -31,6 +35,7 @@ import Cookies from 'universal-cookie';
         </section>
 
         <section class="nav-right">
+            <Button label="Dark Mode" v-on:click="toggleDarkMode()"></Button>
             <RouterLink v-if="isAdmin" to="/admin">Admin</RouterLink>
             <RouterLink v-if="!isUser" to="/login">Logg inn</RouterLink>
             <RouterLink v-if="!isUser" to="/signup">Registrer</RouterLink>

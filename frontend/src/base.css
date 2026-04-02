@@ -1,3 +1,9 @@
+:root {
+  --primary-color: rgb(31, 77, 111);
+  --secondary-color: rgb(226, 223, 216);
+  --navbar-bg-color: rgb(35, 34, 30);
+  --bg-color: rgb(15, 15, 13);
+}
 body {
     font-family: Arial, Helvetica, sans-serif;
     padding: 2rem;
