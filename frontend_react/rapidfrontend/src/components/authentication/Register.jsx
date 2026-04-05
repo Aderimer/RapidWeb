@@ -1,45 +1,57 @@
+import React from 'react';
 import axios from 'axios';
 
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as Yup from 'yup';
 
 
-const Register = () => {
-    function Register(data) {
-        const username = data.target.username.value;
-        const email = data.target.email.value;
-        const password = data.target.password.value;
-        const passwordConfirm = data.target.passwordConfirm.value;
 
-        if (password !== passwordConfirm) {
-            alert("Passwords do not match!");
-            return;
-        } else {
-            axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/users/signup`, {
-                username: username,
-                email: email,
-                password: password
-            })
-        }
+export default function RegisterUser() {
+  const { register, handleSubmit, formState: { errors } } = useForm({
+    resolver: yupResolver(validateSchema),
+    mode: 'onChange'
+  });
+  const onSubmit = data => axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/users/signup`, {
+    username: data.Brukernavn,
+    email: data.Email,
+    password: data.BekreftPassord
+  });
 
-    }
-    return (
-        <div>
-            <h1>Register</h1>
-            <p>Please fill out the form to register.</p>
-            <div>
-                <form onSubmit={Register}>
-                    <label htmlFor="username">Username:</label>
-                    <input type="text" id="username" name="username" required />
-                    <label htmlFor="email">Email:</label>
-                    <input type="email" id="email" name="email" required />
-                    <label htmlFor="password">Password:</label>
-                    <input type="password" id="password" name="password" required />
-                    <label htmlFor="passwordConfirm">Confirm Password:</label>
-                    <input type="password" id="passwordConfirm" name="passwordConfirm" required />
-                    <button type="submit">Register</button>
-                </form>
-            </div>
-        </div>
-    )
+
+  
+  return (
+    <div>
+        <section>
+        <h2>Registrer bruker</h2>
+        </section>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <input type="text" placeholder="Brukernavn" {...register("Brukernavn", {required: true, max: 50, min: 80})} />
+        <p>{errors.Brukernavn?.message}</p>
+      <input type="text" placeholder="Email" {...register("Email", {required: true, pattern: /^\S+@\S+$/i})} />
+        <p>{errors.Email?.message}</p>
+      <input type="password" placeholder="Passord" {...register("Passord")} />
+        <p>{errors.Passord?.message}</p>
+      <input type="password" placeholder="Bekreft passord" {...register("BekreftPassord")} />
+        <p>{errors.BekreftPassord?.message}</p>
+      <input disabled={!!errors.Brukernavn || !!errors.Email || !!errors.Passord || !!errors.BekreftPassord} type="submit" />
+    </form>
+    </div>
+  );
 }
 
-export default Register;
+  const validateSchema = Yup.object().shape({
+    Passord: Yup.string()
+        .required('Passord er påkrevd')
+        .min(6, 'Please ikke bruk "passord123", minst 6 tegn'),
+    BekreftPassord: Yup.string()
+        .oneOf([Yup.ref('Passord'), null], 'Passordene må være like')
+        .required('Påkrevd, for å bekrefte passordet'),
+    Email: Yup.string()
+        .required('Påkrevd, er så du kan bruke "glemt passord"')
+        .email('Email er den med @ og sånt'),
+    Brukernavn: Yup.string()
+        .required('Brukernavn er påkrevd')
+        .min(3, 'Minst 3 tegn')
+        .max(24, 'Bruk kortere navn, max 24 tegn'),
+  });

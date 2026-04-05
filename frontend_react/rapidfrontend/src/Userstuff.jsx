@@ -1,9 +1,9 @@
-import Register from './components/authentication/Register';
+import RegisterWithValidation from './components/authentication/Register';
 
 const RegisterUser = () => {
     return (
         <div>
-            <Register />
+            <RegisterWithValidation />
         </div>
     )
 }
