@@ -1,6 +1,6 @@
 import RegisterWithValidation from './components/authentication/Register';
 
-const RegisterUser = () => {
+const RegisterPage = () => {
     return (
         <div>
             <RegisterWithValidation />
@@ -8,4 +8,4 @@ const RegisterUser = () => {
     )
 }
 
-export default RegisterUser;
+export default RegisterPage;

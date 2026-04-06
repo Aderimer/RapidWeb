@@ -34,6 +34,12 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Allow popups for OAuth flows (Google, etc.)
+app.use((req, res, next) => {
+  res.setHeader('Cross-Origin-Opener-Policy', 'same-origin-allow-popups');
+  next();
+});
+
 // Cors
 app.use(cors({
   origin: 'http://localhost:5173', //Replace with front-end url later

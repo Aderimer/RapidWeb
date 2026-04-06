@@ -5,7 +5,7 @@ var jsend = require("jsend");
 var jwt = require("jsonwebtoken");
 var LocalStrategy = require("passport-local");
 var crypto = require("crypto");
-var { isUser, isAdmin } = require('../middleware/authMiddleware')
+var { isUser, isAdmin } = require('../middleware/authMiddleware');
 var db = require("../models");
 var UserService = require("../services/UserService");
 var userService = new UserService(db);
@@ -77,6 +77,7 @@ router.post("/signup", async function (req, res, next) {
   }
   const existingUser = await userService.getUserByEmail(email);
   if (existingUser) {
+    console.log("User with that email already exists.");
     return res.jsend.fail({
       statusCode: 400,
       message: "A user with that email already exists.",
@@ -103,6 +104,8 @@ router.post("/signup", async function (req, res, next) {
     },
   );
 });
+
+//router.get("/google", passport.authenticate("google"));
 
 router.get('/login', async (req, res) => {
   var locals = {
@@ -180,7 +183,7 @@ router.get('/all', isAdmin, async (req, res) => {
   res.json({"users": users})
 })
 
-router.get("/profile/:id", async (req, res) => {
+router.get("/profile/:id", isAdmin, async (req, res) => {
   const userId = req.params.id;
   try {
     if (!isNaN(userId)) {
@@ -192,6 +195,23 @@ router.get("/profile/:id", async (req, res) => {
       }
     } else {
       res.status(400).json({ message: "Invalid user ID format" });
+    }
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error retrieving user", error: error.message });
+  }
+});
+
+router.get("/me", isUser, async (req, res) => {
+  const userId = req.user.id;
+
+  try {
+    const user = await userService.getUserById(userId);
+    if (user) {
+      res.jsend.success({ statusCode: 200, data: user });
+    } else {
+      res.jsend.fail({ statusCode: 404, message: "User not found" });
     }
   } catch (error) {
     res

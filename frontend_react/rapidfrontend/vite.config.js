@@ -8,4 +8,12 @@ export default defineConfig({
     react(),
     babel({ presets: [reactCompilerPreset()] })
   ],
+  server: {
+    middleware: [
+      (req, res, next) => {
+        res.setHeader('Cross-Origin-Opener-Policy', 'same-origin-allow-popups');
+        next();
+      }
+    ]
+  }
 })

@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-const {getUserData} = require('../middleware/authmiddleware.js')
+const {getUserData} = require('../middleware/authMiddleware.js')
 const jsend = require('jsend')
 
 /* GET home page. */
